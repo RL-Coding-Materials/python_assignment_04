@@ -1,0 +1,32 @@
+classDiagram
+    class ABC {
+        <<abstract>>
+    }
+
+    class FabrykaPojazdow {
+        - _nazwa : str
+        - _liczba_wyprodukowanych : int
+        + nazwa() str 
+        + utworz_fabryke(typ_fabryki: str, nazwa: str) FabrykaPojazdow
+        + sprawdz_rok(rok: int) bool
+        # _zwieksz_licznik() None
+        + ile_wyprodukowano() int
+        <<abstract>>
+        + stworz_pojazd(model: str, rok: int, **kwargs) Pojazd
+    }
+
+    class FabrykaSamochodow {
+        + stworz_pojazd(model: str, rok: int, liczba_drzwi: int = 4) Samochod
+    }
+
+    class FabrykaAutobusow {
+        + stworz_pojazd(model: str, rok: int, liczba_miejsc: int = 50) Autobus
+    }
+
+    ABC <|-- FabrykaPojazdow
+    FabrykaPojazdow <|-- FabrykaSamochodow
+    FabrykaPojazdow <|-- FabrykaAutobusow
+
+    note for FabrykaPojazdow "FabrykaPojazdow zawiera: <br><b>@property</b> nazwa<br> (tylko w celu odczytu)"
+    note for FabrykaPojazdow "FabrykaPojazdow zawiera: <br><b>@abstractmethod</b> stworz_pojazd <br><b>@classmethod</b> utworz_fabryke <br><b>@staticmethod</b> sprawdz_rok"
+    note for FabrykaPojazdow "FabrykaPojazdow zawiera <br>metody instancji: <br>_zwieksz_licznik() <br>ile_wyprodukowano()"

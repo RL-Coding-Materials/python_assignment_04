@@ -1,0 +1,63 @@
+name: Autograding Tests
+on:
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Python Test - Zadanie 1
+      id: test-zadanie-1
+      uses: rlalik/autograding-python-grader@v1.1
+      with:
+        timeout: 10
+        max-score: 2
+        working-directory: zadanie_1
+    - name: Python Test - Zadanie 2
+      id: test-zadanie-2
+      uses: rlalik/autograding-python-grader@v1.1
+      with:
+        timeout: 10
+        max-score: 1
+        setup-command: pip install -r requirements.txt
+        working-directory: zadanie_2
+    - name: Python Test - Zadanie 3
+      id: test-zadanie-3
+      uses: rlalik/autograding-python-grader@v1.1
+      with:
+        timeout: 10
+        max-score: 1
+        working-directory: zadanie_3
+    - name: Python Test - Zadanie 4
+      id: test-zadanie-4
+      uses: rlalik/autograding-python-grader@v1.1
+      with:
+        timeout: 10
+        max-score: 1
+        working-directory: zadanie_4
+    - name: Linter
+      id: pylint-test
+      uses: rlalik/autograding-pylint-grader@v1
+      with:
+        timeout: 5
+        max-score: 1
+        setup-command: pip install pylint
+        pylint-args: '--disable=C0114,C0116'
+        files: 'zadanie_?/*.py'
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-ZADANIE-1_RESULTS: "${{steps.test-zadanie-1.outputs.result}}"
+        TEST-ZADANIE-2_RESULTS: "${{steps.test-zadanie-2.outputs.result}}"
+        TEST-ZADANIE-3_RESULTS: "${{steps.test-zadanie-3.outputs.result}}"
+        TEST-ZADANIE-4_RESULTS: "${{steps.test-zadanie-4.outputs.result}}"
+        PYLINT-TEST_RESULTS: "${{steps.pylint-test.outputs.result}}"
+      with:
+        runners: test-zadanie-1,test-zadanie-2,test-zadanie-3,test-zadanie-4,pylint-test

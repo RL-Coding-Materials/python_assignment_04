@@ -1,0 +1,38 @@
+classDiagram
+    class Pojazd {
+        <<abstract>>
+    }
+
+    class Samochod {
+    }
+
+    class Autobus {
+    }
+
+    class FabrykaPojazdow {
+        <<abstract>>
+    }
+
+    class FabrykaSamochodow {
+        "Tworzy Samochod"
+    }
+
+    class FabrykaAutobusow {
+        "Tworzy Autobus"
+    }
+
+    class Client {
+        main()
+    }
+
+    FabrykaPojazdow <|-- FabrykaSamochodow
+    FabrykaPojazdow <|-- FabrykaAutobusow
+    Pojazd <|-- Samochod
+    Pojazd <|-- Autobus
+
+    FabrykaSamochodow --> Samochod : "Tworzy"
+    FabrykaAutobusow --> Autobus : "Tworzy"
+    Client --> FabrykaSamochodow : "<b>utworz_fabryke()</b><br>samochodów"
+    Client --> FabrykaAutobusow : "<b>utworz_fabryke()</b><br>autobusów"
+    Client --> Samochod : "Używa<br>konkretny obiekt<br><b>Samochod</b>"
+    Client --> Autobus : "Używa<br>konkretny obiekt<br><b>Autobus</b>"

@@ -1,0 +1,24 @@
+classDiagram
+    class ABC {
+        <<abstract>>
+    }
+    class Pojazd {
+        - _model : str
+        - _rok : int
+        - _predkosc : float
+        \_\_init\_\_(model: str, rok: int)
+    }
+    class Samochod {
+        - liczba_drzwi : int
+        \_\_init\_\_(model: str, rok: int, liczba_drzwi: int)
+    }
+    class Autobus {
+        - liczba_miejsc : int
+        \_\_init\_\_(model: str, rok: int, liczba_miejsc: int)
+    }
+
+    ABC <|-- Pojazd
+    Pojazd <|-- Samochod
+    Pojazd <|-- Autobus
+
+    note for Pojazd "Klasa Pojazd ma zawierać @property 'predkosc' z getterem, setterem i deleterem."
